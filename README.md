@@ -29,7 +29,7 @@ Monorepo para extracción OCR de tickets y split de gastos.
 ## Diagramas
 Los diagramas son **mayormente acordes** a lo implementado. Ajustes pendientes frente a diagramas:
 - No hay auth/sesión (no aplica `401` por sesión todavía).
-- Persistencia en Supabase/PostgreSQL está definida en contrato/env, pero no implementada aún.
+- Persistencia: spec definida (sesiones volátiles 48h), implementación in-memory como fallback.
 
 ### 1) Sequence Flow
 ![Sequence Flow](docs/diagrams/sequence-flow.jpg)
@@ -41,7 +41,6 @@ Los diagramas son **mayormente acordes** a lo implementado. Ajustes pendientes f
 ![User & Data Flow](docs/diagrams/user-data-flow.jpg)
 
 ## Próximos pasos (MVP cerrado)
-1. Persistencia real (tickets/splits) en DB.
+1. ~~Persistencia real~~ ✅ Spec definida (sesiones volátiles 48h, purga automática)
 2. Endpoint de resumen exportable (WhatsApp/copy-ready).
-3. Guardas/autenticación opcional (si se requiere multiusuario real).
-4. Docker final para `api` + `web-portal` en CubePath.
+3. Docker final para `api` + `web-portal` en CubePath.
