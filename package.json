@@ -1,0 +1,20 @@
+{
+  "name": "expense-split-ocr",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MVP monorepo para OCR de tickets + split de gastos",
+  "scripts": {
+    "dev:portal": "next dev apps/portal",
+    "build:portal": "next build apps/portal",
+    "dev:api": "nest start --watch apps/api",
+    "build:api": "nest build apps/api"
+  },
+  "dependencies": {
+    "@google/genai": "^0.14.1",
+    "@nestjs/common": "^11.1.6",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}
