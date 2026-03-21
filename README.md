@@ -12,9 +12,10 @@ Monorepo base para extracción OCR de tickets y split de gastos.
 
 ## Estado actual
 - Scaffold inicial listo
-- Contrato OCR (Zod) agregado
+- Contrato OCR (Zod) compartido en `libs/shared/contracts`
+- OCR service con Gemini + preprocesado de imagen (`sharp`) + retry
+- Endpoint API `POST /tickets/ocr` con upload en memoria y `GET /health`
 - Reglas de dominio de split implementadas en `libs/domain`
-- Faltan: wiring de Next/Nest completo + integración real con Gemini
 
 ## Próximos pasos
 1. Generar apps Nx completas (`@nx/next` y `@nx/nest`) cuando el entorno de paquetes esté estable.

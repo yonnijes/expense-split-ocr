@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "types": ["node", "express", "multer"],
+    "baseUrl": ".",
+    "paths": {
+      "@shared/contracts": ["libs/shared/contracts/src/index.ts"],
+      "@ocr-engine": ["libs/ocr-engine/src/index.ts"],
+      "@domain": ["libs/domain/src/expense-split.ts"]
+    }
+  }
+}
