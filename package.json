@@ -6,8 +6,8 @@
   "scripts": {
     "dev:portal": "next dev apps/portal",
     "build:portal": "next build apps/portal",
-    "dev:api": "nest start --watch apps/api",
-    "build:api": "nest build apps/api"
+    "dev:api": "node ./node_modules/@nestjs/cli/bin/nest.js start --watch apps/api",
+    "build:api": "tsc -p apps/api/tsconfig.app.json"
   },
   "dependencies": {
     "@google/genai": "^0.14.1",
@@ -20,6 +20,7 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@nestjs/cli": "^11.0.10",
     "@types/express": "^5.0.6",
     "@types/multer": "^2.1.0",
     "@types/node": "^25.5.0",
