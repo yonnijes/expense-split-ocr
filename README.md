@@ -1,24 +1,47 @@
 # ExpenseSplit OCR (MVP)
 
-Monorepo base para extracción OCR de tickets y split de gastos.
+Monorepo para extracción OCR de tickets y split de gastos.
 
-## Estructura
-- `apps/portal`: Frontend (Next.js 15, App Router)
+## Estructura actual
+- `apps/web-portal`: Frontend (Next.js 15, App Router)
 - `apps/api`: Backend (NestJS)
 - `libs/domain`: Lógica de negocio de split
-- `libs/ocr-engine`: Adaptador OCR (Gemini)
-- `libs/shared-types`: Schemas Zod compartidos
+- `libs/ocr-engine`: Adaptador OCR (Gemini + Sharp)
+- `libs/shared/contracts`: Contratos Zod compartidos (ticket + env)
 - `specs/`: Documentos funcionales/técnicos
 
 ## Estado actual
-- Scaffold inicial listo
-- Contrato OCR (Zod) compartido en `libs/shared/contracts`
-- OCR service con Gemini + preprocesado de imagen (`sharp`) + retry
-- Endpoint API `POST /tickets/ocr` con upload en memoria y `GET /health`
-- Reglas de dominio de split implementadas en `libs/domain`
+- OCR backend funcional: `POST /tickets/ocr`, `GET /health`
+- Validación de entorno con `@nestjs/config` + `envSchema`
+- Upload en memoria (sin disco), preprocesado con `sharp`, retry OCR
+- Frontend MVP funcional con flujo completo:
+  - upload → processing → editing → splitting
+- Store de estado con Zustand (`useTicketStore`)
+- Editor con React Hook Form + Zod compartido
+- Split equitativo y por ítem en UI
 
-## Próximos pasos
-1. Generar apps Nx completas (`@nx/next` y `@nx/nest`) cuando el entorno de paquetes esté estable.
-2. Implementar endpoint `POST /tickets/ocr` en `apps/api`.
-3. Validar respuesta IA con `TicketSchema`.
-4. Conectar flujo en frontend: upload → validar → split.
+## Scripts
+- `npm run dev:api` → API NestJS en watch
+- `npm run build:api` → build API (tsc + tsc-alias)
+- `npm run dev:web` → Next.js en `http://localhost:3000`
+- `npm run build:web` → build de producción del portal
+
+## Diagramas
+Los diagramas son **mayormente acordes** a lo implementado. Ajustes pendientes frente a diagramas:
+- No hay auth/sesión (no aplica `401` por sesión todavía).
+- Persistencia en Supabase/PostgreSQL está definida en contrato/env, pero no implementada aún.
+
+### 1) Sequence Flow
+![Sequence Flow](docs/diagrams/sequence-flow.jpg)
+
+### 2) Nx Architecture
+![Nx Architecture](docs/diagrams/nx-architecture.jpg)
+
+### 3) User & Data Flow
+![User & Data Flow](docs/diagrams/user-data-flow.jpg)
+
+## Próximos pasos (MVP cerrado)
+1. Persistencia real (tickets/splits) en DB.
+2. Endpoint de resumen exportable (WhatsApp/copy-ready).
+3. Guardas/autenticación opcional (si se requiere multiusuario real).
+4. Docker final para `api` + `web-portal` en CubePath.
