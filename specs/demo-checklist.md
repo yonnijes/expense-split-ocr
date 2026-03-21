@@ -40,5 +40,12 @@ Mostrar el flujo completo: **Subir ticket → OCR → Corregir → Split → Com
 ## Persistencia (actualizado)
 - [x] Spec definida: sesiones volátiles 48h con purga automática
 - [x] Entidades de dominio creadas (`AnonymousSession`, `SESSION_TTL_HOURS`)
-- [x] Repository pattern implementado (in-memory fallback)
-- [ ] Implementación PostgreSQL + pg_cron para purga
+- [x] Repository pattern implementado (Prisma + PostgreSQL)
+- [x] Cleanup cron automático (cada hora)
+- [ ] Deploy en CubePath (Dokploy)
+
+## Infraestructura (actualizado)
+- [x] Dockerfiles multi-stage (api + portal)
+- [x] docker-compose para testing local
+- [x] Spec deployment-cubepath.md (PostgreSQL interno + R2)
+- [ ] Deploy real en Dokploy

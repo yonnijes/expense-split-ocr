@@ -8,7 +8,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { memoryStorage } from 'multer';
+import multer from 'multer';
 import { GeminiOcrService } from '@ocr-engine';
 
 @Controller('tickets')
@@ -19,7 +19,7 @@ export class OcrController {
   @HttpCode(200)
   @UseInterceptors(
     FileInterceptor('file', {
-      storage: memoryStorage(),
+      storage: multer.memoryStorage(),
       limits: { fileSize: Number(process.env.MAX_FILE_SIZE ?? 8 * 1024 * 1024) },
       fileFilter: (_, file, cb) => {
         const ok = ['image/jpeg', 'image/png'].includes(file.mimetype);
@@ -27,7 +27,7 @@ export class OcrController {
       },
     })
   )
-  async processTicket(@UploadedFile() file?: Express.Multer.File) {
+  async processTicket(@UploadedFile() file?: any) {
     if (!file) throw new BadRequestException('Archivo requerido en campo file');
 
     try {

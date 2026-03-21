@@ -42,5 +42,21 @@ Los diagramas son **mayormente acordes** a lo implementado. Ajustes pendientes f
 
 ## Próximos pasos (MVP cerrado)
 1. ~~Persistencia real~~ ✅ Spec definida (sesiones volátiles 48h, purga automática)
-2. Endpoint de resumen exportable (WhatsApp/copy-ready).
-3. Docker final para `api` + `web-portal` en CubePath.
+2. ~~Endpoint de resumen exportable~~ ✅ WhatsApp + Copiar implementados
+3. ~~Docker final~~ ✅ Dockerfiles + docker-compose listos
+
+## Deploy (CubePath / Dokploy)
+
+### Local (Docker Compose)
+```bash
+docker-compose up -d
+# API: http://localhost:8000
+# Web: http://localhost:3000
+```
+
+### Producción (Dokploy)
+Ver `specs/deployment-cubepath.md` para configuración completa:
+- PostgreSQL interno (red Dokploy)
+- API + Web Portal containers
+- Cloudflare R2 para imágenes
+- Cleanup cron automático (48h TTL)

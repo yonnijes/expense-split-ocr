@@ -8,12 +8,13 @@
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "types": ["node", "express", "multer"],
+    "types": ["node"],
     "baseUrl": ".",
     "paths": {
       "@shared/contracts": ["libs/shared/contracts/src/index.ts"],
       "@ocr-engine": ["libs/ocr-engine/src/index.ts"],
-      "@domain": ["libs/domain/src/expense-split.ts"]
+      "@domain/*": ["libs/domain/src/*"],
+      "@infrastructure/*": ["libs/infrastructure/src/*"]
     }
   }
 }
