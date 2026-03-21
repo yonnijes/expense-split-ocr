@@ -25,7 +25,7 @@ Mostrar el flujo completo: **Subir ticket → OCR → Corregir → Split → Com
 - [x] Advertencia visual cuando suma de ítems ≠ total.
 - [x] Split equitativo correcto a 2 decimales.
 - [x] Split por ítem recalcula en tiempo real.
-- [ ] Botón "Copiar resumen para WhatsApp" genera texto útil.
+- [x] Botón "Copiar resumen para WhatsApp" genera texto útil.
 
 ## KPI de demo
 - [ ] Tiempo upload→datos editables <= 7s (medición formal pendiente).

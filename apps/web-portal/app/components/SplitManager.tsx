@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { TicketContract } from '@shared/contracts';
 import { computeSplitSummary, Participant, SplitMode } from '../stores/useTicketStore';
+import { ShareButton } from './ShareButton';
 
 type Props = {
   ticket: TicketContract;
@@ -129,6 +130,21 @@ export function SplitManager(props: Props) {
             ))}
           </div>
         </div>
+
+        {props.participants.length >= 2 && (
+          <div className="border-t pt-4">
+            <p className="mb-3 text-sm font-medium text-slate-700">Compartir resumen</p>
+            <ShareButton
+              merchant={props.ticket.merchant}
+              total={props.ticket.total}
+              currency={props.ticket.currency}
+              participants={props.participants.map((p) => ({
+                name: p.name,
+                amount: summary[p.id] ?? 0,
+              }))}
+            />
+          </div>
+        )}
       </CardContent>
     </Card>
   );
