@@ -13,6 +13,15 @@
       ],
       "@shared/contracts": [
         "../../libs/shared/contracts/src/index.ts"
+      ],
+      "@ocr-engine": [
+        "../../libs/ocr-engine/src/index.ts"
+      ],
+      "@domain/*": [
+        "../../libs/domain/src/*"
+      ],
+      "@infrastructure/*": [
+        "../../libs/infrastructure/src/*"
       ]
     },
     "lib": [
