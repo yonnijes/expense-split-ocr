@@ -1,6 +1,6 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { TicketRepository, SessionRepository, CreateTicketInput } from '@domain/ticket.repository';
+import { TicketRepository, SessionRepository, CreateTicketInput, ExpiredTicketImage } from '@domain/ticket.repository';
 import { TicketEntity, SessionEntity } from '@domain/ticket.entity';
 
 @Injectable()
@@ -26,6 +26,7 @@ export class PrismaTicketsRepository implements TicketRepository, OnModuleInit {
         currency: input.currency,
         items: input.items as any,
         imageUrl: input.imageUrl,
+        imageKey: input.imageKey,
         expiresAt: input.expiresAt,
       },
     });
@@ -62,6 +63,20 @@ export class PrismaTicketsRepository implements TicketRepository, OnModuleInit {
     return count;
   }
 
+  async findExpiredWithImages(): Promise<ExpiredTicketImage[]> {
+    const tickets = await this.prisma.ticket.findMany({
+      where: {
+        expiresAt: { lt: new Date() },
+        imageKey: { not: null },
+      },
+      select: { id: true, imageKey: true },
+    });
+
+    return tickets
+      .filter((t) => !!t.imageKey)
+      .map((t) => ({ id: t.id, imageKey: t.imageKey as string }));
+  }
+
   private mapToEntity(ticket: any): TicketEntity {
     return {
       id: ticket.id,
@@ -71,6 +86,7 @@ export class PrismaTicketsRepository implements TicketRepository, OnModuleInit {
       currency: ticket.currency,
       items: ticket.items as any,
       imageUrl: ticket.imageUrl,
+      imageKey: ticket.imageKey,
       expiresAt: ticket.expiresAt,
       createdAt: ticket.createdAt,
     };

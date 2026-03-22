@@ -45,7 +45,8 @@ CREATE TABLE tickets (
   items JSONB NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   expires_at TIMESTAMPTZ NOT NULL,
-  image_url TEXT, -- Storage externo (S3)
+  image_url TEXT, -- Supabase Storage (URL pública)
+  image_key TEXT, -- Object key para borrado en cleanup
   CONSTRAINT check_expires CHECK (expires_at > created_at)
 );
 
@@ -103,7 +104,7 @@ interface TicketRepository {
 | Tickets (texto) | PostgreSQL (Dokploy) | Datos estructurados, queries |
 | Sessions | PostgreSQL (Dokploy) | TTL, purga programada |
 | Splits | PostgreSQL (Dokploy) | Integridad relacional |
-| **Imágenes** | **Storage externo (S3)** | No saturar disco VPS |
+| **Imágenes** | **Supabase Storage** | TTL coordinado con DB (48h) |
 
 ### Variables de Entorno
 
@@ -177,7 +178,7 @@ async purgeExpiredTickets(): Promise<{ deleted: number }> {
 
 ### Backup Automático
 - `pg_dump` diario (vía cron en VPS)
-- Almacenar en S3 externo
+- Almacenar en Supabase Storage
 - Retención: 7 días
 
 ### Recovery

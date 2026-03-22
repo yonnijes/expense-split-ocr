@@ -10,6 +10,7 @@ export interface TicketEntity {
   currency: string;
   items: TicketItem[];
   imageUrl: string | null;
+  imageKey: string | null;
   expiresAt: Date;
   createdAt: Date;
 }

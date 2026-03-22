@@ -27,10 +27,10 @@
                               │
                               │ HTTPS
                               ▼
-                    ┌─────────────────┐
-                    │  Cloudflare R2  │
-                    │  (imágenes)     │
-                    └─────────────────┘
+                    ┌──────────────────────┐
+                    │   Supabase Storage   │
+                    │     (imágenes)       │
+                    └──────────────────────┘
 ```
 
 ## Servicios Requeridos
@@ -73,10 +73,9 @@ DATABASE_URL=postgresql://expense_user:password@postgres:5432/expenses_db?schema
   JWT_SECRET=<secure-random-32-chars>
   JWT_EXPIRES_IN=48h
   MAX_FILE_SIZE=5242880
-  R2_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com
-  R2_BUCKET=ticket-images
-  R2_ACCESS_KEY=<access-key>
-  R2_SECRET_KEY=<secret-key>
+  SUPABASE_URL=https://your-project.supabase.co
+  SUPABASE_KEY=<service-role-key>
+  SUPABASE_BUCKET=ticket-images
   ```
 
 **Health Check:**
@@ -96,9 +95,9 @@ DATABASE_URL=postgresql://expense_user:password@postgres:5432/expenses_db?schema
   NEXT_PUBLIC_API_URL=https://api.tudominio.com
   ```
 
-### 4. Cloudflare R2 (Storage Externo)
+### 4. Supabase Storage (Imágenes)
 
-**Por qué R2 y no local:**
+**Por qué Storage externo y no local:**
 - Imágenes no saturan disco del VPS
 - CDN incluido (menor latencia)
 - Backup automático
@@ -107,7 +106,12 @@ DATABASE_URL=postgresql://expense_user:password@postgres:5432/expenses_db?schema
 **Configuración:**
 - **Bucket:** `ticket-images`
 - **Public Access:** Habilitado (para lectura de imágenes)
-- **Upload:** Desde API con signed URLs o directo con service credentials
+- **Upload:** Desde API con service credentials
+
+**TTL coordinado (48h):**
+- Cada imagen se sube con un `objectKey` único
+- El backend guarda `imageUrl` + `imageKey`
+- Cuando el cron borra el ticket, **borra también el objeto** en Storage
 
 ---
 
@@ -141,7 +145,7 @@ export class CleanupService {
 2. **Vida útil:** Datos accesibles vía API
 3. **Expiración:** `expiresAt < NOW()` → elegible para purga
 4. **Cleanup:** Cron job elimina registros expirados
-5. **Imágenes:** Opcionalmente eliminar de R2 (lazy cleanup)
+5. **Imágenes:** Opcionalmente eliminar de Supabase Storage (lazy cleanup)
 
 ---
 
@@ -253,7 +257,7 @@ app.use('/tickets/ocr', rateLimit({ windowMs: 60000, max: 10 }));
 | Recurso | Costo |
 |---------|-------|
 | VPS (2GB RAM, 1 CPU) | ~$10-15/mes |
-| Cloudflare R2 (1GB) | ~$0.15/mes |
+| Supabase Storage (1GB) | ~$0.00–$0.50/mes |
 | Dominio (opcional) | ~$10/año |
 | **Total** | **~$15-25/mes** |
 
@@ -267,6 +271,6 @@ app.use('/tickets/ocr', rateLimit({ windowMs: 60000, max: 10 }));
 - [ ] Variables de entorno cargadas
 - [ ] Migraciones Prisma ejecutadas
 - [ ] Health checks verificados
-- [ ] R2 bucket configurado
+- [ ] Supabase Storage bucket configurado
 - [ ] Cleanup cron verificado
 - [ ] HTTPS/SSL configurado (Cloudflare o Let's Encrypt)
