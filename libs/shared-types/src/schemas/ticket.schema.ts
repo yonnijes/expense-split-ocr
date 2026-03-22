@@ -4,4 +4,4 @@ export {
   OcrFailureSchema,
   type TicketContract as Ticket,
   type OcrFailure,
-} from '../../../shared/contracts/src/ticket.contract';
+} from '@shared/contracts';

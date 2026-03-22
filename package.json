@@ -4,11 +4,16 @@
   "private": true,
   "description": "MVP monorepo para OCR de tickets + split de gastos",
   "scripts": {
-    "dev:web": "cd apps/web-portal && node ../../node_modules/next/dist/bin/next dev",
-    "build:web": "cd apps/web-portal && node ../../node_modules/next/dist/bin/next build",
-    "start:web": "cd apps/web-portal && node ../../node_modules/next/dist/bin/next start -p 3000",
-    "dev:api": "node ./node_modules/tsx/dist/cli.mjs watch --tsconfig tsconfig.json apps/api/src/main.ts",
-    "build:api": "tsc -p apps/api/tsconfig.app.json && tsc-alias -p apps/api/tsconfig.app.json"
+    "dev:web": "nx serve web-portal",
+    "build:web": "nx build web-portal",
+    "start:web": "nx start web-portal",
+    "dev:api": "nx serve api",
+    "build:api": "nx build api",
+    "dev:web:legacy": "cd apps/web-portal && node ../../node_modules/next/dist/bin/next dev",
+    "build:web:legacy": "cd apps/web-portal && node ../../node_modules/next/dist/bin/next build",
+    "start:web:legacy": "cd apps/web-portal && node ../../node_modules/next/dist/bin/next start -p 3000",
+    "dev:api:legacy": "node ./node_modules/tsx/dist/cli.mjs watch --tsconfig tsconfig.json apps/api/src/main.ts",
+    "build:api:legacy": "tsc -p apps/api/tsconfig.app.json && tsc-alias -p apps/api/tsconfig.app.json"
   },
   "dependencies": {
     "@google/genai": "^0.14.1",
