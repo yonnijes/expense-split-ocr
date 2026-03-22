@@ -12,7 +12,7 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "tsc -p apps/api/tsconfig.app.json && tsc-alias -p apps/api/tsconfig.app.json"
+        "command": "tsc -p apps/api/tsconfig.app.json && node ./node_modules/tsc-alias/dist/index.js -p apps/api/tsconfig.app.json"
       }
     }
   }

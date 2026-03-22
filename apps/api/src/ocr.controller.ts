@@ -12,15 +12,21 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import multer from 'multer';
 import { OCR_PROVIDER_TOKEN, type OcrProvider } from '@ocr-engine';
-import { TicketRepository, SessionRepository, CreateTicketInput } from '@domain/ticket.repository';
+import {
+  TicketRepository,
+  SessionRepository,
+  CreateTicketInput,
+  TICKET_REPO_TOKEN,
+  SESSION_REPO_TOKEN,
+} from '@domain/ticket.repository';
 import { SupabaseStorageService } from '@infrastructure';
 
 @Controller('tickets')
 export class OcrController {
   constructor(
     @Inject(OCR_PROVIDER_TOKEN) private readonly ocr: OcrProvider,
-    private readonly ticketRepo: TicketRepository,
-    private readonly sessionRepo: SessionRepository,
+    @Inject(TICKET_REPO_TOKEN) private readonly ticketRepo: TicketRepository,
+    @Inject(SESSION_REPO_TOKEN) private readonly sessionRepo: SessionRepository,
     private readonly storage: SupabaseStorageService,
   ) {}
 

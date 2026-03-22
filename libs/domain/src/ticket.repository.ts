@@ -4,6 +4,9 @@ import { TicketEntity, SessionEntity } from './ticket.entity';
  * Repository interface para Tickets y Sesiones.
  * Definido en domain, implementado en infrastructure.
  */
+export const TICKET_REPO_TOKEN = Symbol('TICKET_REPO');
+export const SESSION_REPO_TOKEN = Symbol('SESSION_REPO');
+
 export interface TicketRepository {
   create(sessionId: string, ticket: CreateTicketInput): Promise<TicketEntity>;
   findById(id: string): Promise<TicketEntity | null>;

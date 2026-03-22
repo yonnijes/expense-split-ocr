@@ -15,7 +15,7 @@ export class PrismaHealthService implements OnModuleInit {
     try {
       await this.prisma.$queryRaw`SELECT 1`;
       return true;
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`DB ping failed: ${error?.message ?? error}`);
       return false;
     }

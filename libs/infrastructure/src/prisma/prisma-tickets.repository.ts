@@ -73,8 +73,8 @@ export class PrismaTicketsRepository implements TicketRepository, OnModuleInit {
     });
 
     return tickets
-      .filter((t) => !!t.imageKey)
-      .map((t) => ({ id: t.id, imageKey: t.imageKey as string }));
+      .filter((t: { imageKey: string | null }) => !!t.imageKey)
+      .map((t: { id: string; imageKey: string | null }) => ({ id: t.id, imageKey: t.imageKey as string }));
   }
 
   private mapToEntity(ticket: any): TicketEntity {

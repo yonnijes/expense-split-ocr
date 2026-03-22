@@ -1,6 +1,11 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { TicketRepository, SessionRepository } from '@domain/ticket.repository';
+import {
+  TicketRepository,
+  SessionRepository,
+  TICKET_REPO_TOKEN,
+  SESSION_REPO_TOKEN,
+} from '@domain/ticket.repository';
 import { SupabaseStorageService } from '@infrastructure';
 
 @Injectable()
@@ -8,8 +13,8 @@ export class CleanupService {
   private readonly logger = new Logger(CleanupService.name);
 
   constructor(
-    private readonly ticketRepo: TicketRepository,
-    private readonly sessionRepo: SessionRepository,
+    @Inject(TICKET_REPO_TOKEN) private readonly ticketRepo: TicketRepository,
+    @Inject(SESSION_REPO_TOKEN) private readonly sessionRepo: SessionRepository,
     private readonly storage: SupabaseStorageService,
   ) {}
 
@@ -27,8 +32,8 @@ export class CleanupService {
       if (ticketsDeleted > 0 || sessionsDeleted > 0) {
         this.logger.log(`Cleanup: ${ticketsDeleted} tickets, ${sessionsDeleted} sessions purged`);
       }
-    } catch (error) {
-      this.logger.error(`Cleanup failed: ${error.message}`);
+    } catch (error: any) {
+      this.logger.error(`Cleanup failed: ${error?.message ?? error}`);
     }
   }
 }

@@ -13,7 +13,8 @@ type Props = {
 };
 
 export function ShareButton({ merchant, total, currency, participants, sessionId }: Props) {
-  const shareUrl = sessionId ? `https://split.cubepath.io/t/${sessionId}` : undefined;
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const shareUrl = sessionId ? `${baseUrl}/t/${sessionId}` : undefined;
 
   const message = formatWhatsAppMessage({ merchant, total, currency, participants, shareUrl });
   const waUrl = buildWhatsAppUrl(message);
