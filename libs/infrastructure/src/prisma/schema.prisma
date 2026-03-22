@@ -26,6 +26,7 @@ model Ticket {
   currency  String   @default("EUR")
   items     Json
   imageUrl  String?
+  imageKey  String?
   expiresAt DateTime
   createdAt DateTime @default(now())
 

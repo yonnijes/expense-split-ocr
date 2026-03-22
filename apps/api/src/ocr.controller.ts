@@ -7,18 +7,21 @@ import {
   Post,
   UploadedFile,
   UseInterceptors,
+  Inject,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import multer from 'multer';
-import { GeminiOcrService } from '@ocr-engine';
+import { OCR_PROVIDER_TOKEN, type OcrProvider } from '@ocr-engine';
 import { TicketRepository, SessionRepository, CreateTicketInput } from '@domain/ticket.repository';
+import { SupabaseStorageService } from '@infrastructure';
 
 @Controller('tickets')
 export class OcrController {
   constructor(
-    private readonly ocr: GeminiOcrService,
+    @Inject(OCR_PROVIDER_TOKEN) private readonly ocr: OcrProvider,
     private readonly ticketRepo: TicketRepository,
     private readonly sessionRepo: SessionRepository,
+    private readonly storage: SupabaseStorageService,
   ) {}
 
   @Post('ocr')
@@ -50,12 +53,18 @@ export class OcrController {
         session = await this.sessionRepo.create();
       }
 
+      const objectKey = `tickets/${session.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${
+        file.mimetype === 'image/png' ? 'png' : 'jpg'
+      }`;
+      const upload = await this.storage.uploadImage(objectKey, file.buffer, file.mimetype);
+
       const ticketInput: CreateTicketInput = {
         merchant: data.merchant ?? null,
         total: data.total,
         currency: data.currency ?? 'EUR',
         items: data.items ?? [],
-        imageUrl: null, // TODO: subir imagen a storage externo y guardar URL
+        imageUrl: upload.publicUrl,
+        imageKey: upload.objectKey,
         expiresAt: session.expiresAt,
       };
 

@@ -86,7 +86,7 @@ DATABASE_URL=postgresql://user:pass@postgres:5432/expense_split
 - [ ] Web Portal configurado
 - [ ] Variables de entorno cargadas en Dokploy
 - [ ] Health checks verificados
-- [ ] Storage externo (R2/S3) configurado para imágenes
+- [ ] Supabase Storage configurado para imágenes
 
 ### Servicios Requeridos
 | Servicio | Tipo | Puerto | Estado |
@@ -94,7 +94,7 @@ DATABASE_URL=postgresql://user:pass@postgres:5432/expense_split
 | PostgreSQL | Database | 5432 (internal) | ⏳ Pendiente |
 | NestJS API | Application | 8000 | ⏳ Pendiente |
 | Next.js Portal | Application | 3000 | ⏳ Pendiente |
-| Cloudflare R2 | Storage | N/A | ⏳ Pendiente |
+| Supabase Storage | Storage | N/A | ⏳ Pendiente |
 
 ---
 
@@ -103,7 +103,7 @@ DATABASE_URL=postgresql://user:pass@postgres:5432/expense_split
 ### Fase 1: Infraestructura Base
 - [ ] Crear PostgreSQL en Dokploy (sin puerto público)
 - [ ] Configurar red interna Docker
-- [ ] Crear bucket R2/S3 para imágenes
+- [ ] Crear bucket Supabase Storage para imágenes
 
 ### Fase 2: Aplicaciones
 - [ ] Deploy API (GitHub → Dokploy)
@@ -134,7 +134,7 @@ DATABASE_URL=postgresql://user:pass@postgres:5432/expense_split
 2. **Clean Architecture** — Domain, Application, Infrastructure separados
 3. **Contratos Zod** — Single Source of Truth entre front/back
 4. **TTL automático** — Purga de datos a las 48h (privacidad por diseño)
-5. **Storage híbrido** — DB local + imágenes en S3 (escalabilidad)
+5. **Storage híbrido** — DB local + imágenes en Supabase Storage (escalabilidad)
 
 ### SOLID Aplicado
 - **S**ingle Responsibility: Servicios separados (OCR, Split, Cleanup)

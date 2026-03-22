@@ -10,12 +10,9 @@ export const envSchema = z.object({
 
   DATABASE_URL: z.string().min(1),
 
-  // Storage externo (opcional para imágenes)
-  STORAGE_PROVIDER: z.enum(['s3', 'r2', 'supabase']).optional().or(z.literal('')),
-  STORAGE_ENDPOINT: z.string().url().optional().or(z.literal('')),
-  STORAGE_BUCKET: z.string().optional().or(z.literal('')),
-  STORAGE_ACCESS_KEY: z.string().optional().or(z.literal('')),
-  STORAGE_SECRET_KEY: z.string().optional().or(z.literal('')),
+  SUPABASE_URL: z.string().url().min(1),
+  SUPABASE_KEY: z.string().min(1),
+  SUPABASE_BUCKET: z.string().min(1).default('ticket-images'),
 
   JWT_SECRET: z.string().min(16),
   JWT_EXPIRES_IN: z.string().min(1).default('7d'),

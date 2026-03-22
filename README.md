@@ -46,7 +46,7 @@ docker-compose up -d
 | **Validación** | Zod (Shared Contracts) |
 | **Estado** | Zustand (Frontend) |
 | **Database** | PostgreSQL 16 (Dokploy internal) |
-| **Storage** | Cloudflare R2 / S3 (imágenes) |
+| **Storage** | Supabase Storage (imágenes) |
 
 ### Estructura del Monorepo
 
@@ -153,7 +153,7 @@ expense-split-ocr/
 | PostgreSQL | Database | 5432 (internal) | Sin puerto público |
 | NestJS API | Application | 8000 | Health check `/health` |
 | Next.js Portal | Application | 3000 | Estático o SSR |
-| Cloudflare R2 | Storage | N/A | Imágenes de tickets |
+| Supabase Storage | Storage | N/A | Imágenes de tickets |
 
 ### Variables de Entorno
 
@@ -170,12 +170,10 @@ NODE_ENV=production
 PORT=8000
 FRONTEND_URL=https://split.tudominio.com
 
-# Storage (imágenes)
-STORAGE_PROVIDER=s3
-STORAGE_ENDPOINT=https://s3.provider.com
-STORAGE_BUCKET=expense-split-tickets
-STORAGE_ACCESS_KEY=xxx
-STORAGE_SECRET_KEY=xxx
+# Supabase Storage (imágenes)
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_KEY=your-service-role-key
+SUPABASE_BUCKET=ticket-images
 ```
 
 Ver `specs/deployment-cubepath.md` para configuración completa.
@@ -200,7 +198,7 @@ Ver `specs/deployment-cubepath.md` para configuración completa.
 ### Crítico (Deploy)
 - [ ] Crear PostgreSQL en Dokploy
 - [ ] Deploy API + Portal en CubePath
-- [ ] Configurar R2/S3 para imágenes
+- [ ] Configurar Supabase Storage para imágenes
 - [ ] Ejecutar migraciones DB
 
 ### Importante (Demo)

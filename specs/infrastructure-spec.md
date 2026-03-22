@@ -54,7 +54,7 @@ Migración de arquitectura **BaaS (Supabase)** → **Infraestructura Auto-Gestio
 | Tickets (texto) | PostgreSQL (Dokploy) | Datos estructurados, queries, relaciones |
 | Sessions | PostgreSQL (Dokploy) | TTL, purga programada |
 | Splits | PostgreSQL (Dokploy) | Integridad relacional |
-| **Imágenes de tickets** | **Storage externo** (S3-compatible) | No saturar disco VPS, CDN opcional |
+| **Imágenes de tickets** | **Supabase Storage** | TTL coordinado con DB, CDN opcional |
 
 ### Variables de Entorno Requeridas
 
@@ -231,7 +231,7 @@ GET /health/storage  # API + Storage externo OK
 
 ### Backup Automático
 - **pg_dump** diario (vía cron en VPS)
-- Almacenar en S3 externo (mismo provider de imágenes)
+- Almacenar en Supabase Storage (mismo provider de imágenes)
 - Retención: 7 días
 
 ### Recovery

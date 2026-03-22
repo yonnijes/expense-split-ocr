@@ -10,6 +10,7 @@ export interface TicketRepository {
   findBySessionId(sessionId: string): Promise<TicketEntity[]>;
   update(id: string, updates: Partial<TicketEntity>): Promise<TicketEntity>;
   deleteExpired(): Promise<number>;
+  findExpiredWithImages(): Promise<ExpiredTicketImage[]>;
 }
 
 export interface SessionRepository {
@@ -24,5 +25,11 @@ export interface CreateTicketInput {
   currency: string;
   items: Array<{ description: string; price: number; quantity?: number }>;
   imageUrl: string | null;
+  imageKey: string | null;
   expiresAt: Date;
+}
+
+export interface ExpiredTicketImage {
+  id: string;
+  imageKey: string;
 }
