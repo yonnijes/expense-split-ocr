@@ -1,0 +1,25 @@
+{
+  "name": "web-portal",
+  "projectType": "application",
+  "sourceRoot": "apps/web-portal",
+  "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/web-portal && npx next dev"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/web-portal && npx next build"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd apps/web-portal && npx next start"
+      }
+    }
+  }
+}
