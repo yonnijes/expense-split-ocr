@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { HealthController } from './health.controller';
 import { OcrController } from './ocr.controller';
-import { GeminiOcrService } from '@ocr-engine';
+import { GeminiOcrService, OCR_PROVIDER_TOKEN } from '@ocr-engine';
 import { envSchema } from '@shared/contracts';
 import { InfrastructureModule } from '@infrastructure/infrastructure.module';
 import { CleanupModule } from './cleanup/cleanup.module';
@@ -18,6 +18,12 @@ import { CleanupModule } from './cleanup/cleanup.module';
     CleanupModule,
   ],
   controllers: [HealthController, OcrController],
-  providers: [GeminiOcrService],
+  providers: [
+    GeminiOcrService,
+    {
+      provide: OCR_PROVIDER_TOKEN,
+      useExisting: GeminiOcrService,
+    },
+  ],
 })
 export class AppModule {}

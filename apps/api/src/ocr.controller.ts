@@ -7,16 +7,17 @@ import {
   Post,
   UploadedFile,
   UseInterceptors,
+  Inject,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import multer from 'multer';
-import { GeminiOcrService } from '@ocr-engine';
+import { OCR_PROVIDER_TOKEN, type OcrProvider } from '@ocr-engine';
 import { TicketRepository, SessionRepository, CreateTicketInput } from '@domain/ticket.repository';
 
 @Controller('tickets')
 export class OcrController {
   constructor(
-    private readonly ocr: GeminiOcrService,
+    @Inject(OCR_PROVIDER_TOKEN) private readonly ocr: OcrProvider,
     private readonly ticketRepo: TicketRepository,
     private readonly sessionRepo: SessionRepository,
   ) {}
