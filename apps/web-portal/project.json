@@ -3,22 +3,45 @@
   "projectType": "application",
   "sourceRoot": "apps/web-portal",
   "targets": {
-    "serve": {
-      "executor": "nx:run-commands",
+    "build": {
+      "executor": "@nx/next:build",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
       "options": {
-        "command": "cd apps/web-portal && NODE_ENV=development node ../../node_modules/next/dist/bin/next dev"
+        "root": "apps/web-portal",
+        "outputPath": "dist/apps/web-portal"
+      },
+      "configurations": {
+        "production": {},
+        "development": {
+          "outputPath": "apps/web-portal/.next"
+        }
       }
     },
-    "build": {
-      "executor": "nx:run-commands",
+    "serve": {
+      "executor": "@nx/next:server",
+      "defaultConfiguration": "development",
       "options": {
-        "command": "cd apps/web-portal && NODE_ENV=production node ../../node_modules/next/dist/bin/next build"
+        "buildTarget": "web-portal:build",
+        "dev": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "web-portal:build:development",
+          "dev": true
+        },
+        "production": {
+          "buildTarget": "web-portal:build:production",
+          "dev": false
+        }
       }
     },
     "start": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/next:delegate-build",
       "options": {
-        "command": "cd apps/web-portal && NODE_ENV=production node ../../node_modules/next/dist/bin/next start"
+        "buildTarget": "web-portal:build"
       }
     }
   }

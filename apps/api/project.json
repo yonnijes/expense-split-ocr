@@ -10,9 +10,27 @@
       }
     },
     "build": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/webpack:webpack",
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
-        "command": "tsc -p apps/api/tsconfig.app.json && node ./node_modules/tsc-alias/dist/index.js -p apps/api/tsconfig.app.json"
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/api",
+        "main": "apps/api/src/main.ts",
+        "tsConfig": "apps/api/tsconfig.app.json",
+        "webpackConfig": "apps/api/webpack.config.js",
+        "generatePackageJson": true,
+        "bundle": true,
+        "isolatedConfig": true
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        }
       }
     }
   }
