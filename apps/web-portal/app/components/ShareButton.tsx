@@ -2,7 +2,7 @@
 
 import { Share2, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { formatWhatsAppMessage, buildWhatsAppUrl } from '@domain/whatsapp-formatter';
+import { formatWhatsAppMessage, buildWhatsAppUrlFromMessage, formatCopyText } from '@domain/expense-formatter';
 
 type Props = {
   merchant: string;
@@ -17,10 +17,10 @@ export function ShareButton({ merchant, total, currency, participants, sessionId
   const shareUrl = sessionId ? `${baseUrl}/t/${sessionId}` : undefined;
 
   const message = formatWhatsAppMessage({ merchant, total, currency, participants, shareUrl });
-  const waUrl = buildWhatsAppUrl(message);
+  const waUrl = buildWhatsAppUrlFromMessage(message);
 
   async function handleCopy() {
-    const text = buildCopyText({ merchant, total, currency, participants, shareUrl });
+    const text = formatCopyText({ merchant, total, currency, participants, shareUrl });
     await navigator.clipboard.writeText(text);
   }
 
@@ -41,20 +41,3 @@ export function ShareButton({ merchant, total, currency, participants, sessionId
   );
 }
 
-function buildCopyText(data: { merchant: string; total: number; currency: string; participants: Array<{ name: string; amount: number }>; shareUrl?: string }): string {
-  const lines: string[] = [];
-  lines.push(`🧾 Resumen de Gasto: ${data.merchant}`);
-  lines.push(`💰 Total: ${data.total.toFixed(2)}${data.currency}`);
-  lines.push('');
-  lines.push('👥 Reparto:');
-  for (const p of data.participants) {
-    lines.push(`• ${p.name}: ${p.amount.toFixed(2)}${data.currency}`);
-  }
-  if (data.shareUrl) {
-    lines.push('');
-    lines.push(`🔗 Detalle: ${data.shareUrl}`);
-  }
-  lines.push('');
-  lines.push('Generado con ExpenseSplit (MVP)');
-  return lines.join('\n');
-}

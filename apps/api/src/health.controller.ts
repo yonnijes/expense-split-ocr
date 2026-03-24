@@ -3,7 +3,7 @@ import { PrismaHealthService } from '@infrastructure';
 
 @Controller('health')
 export class HealthController {
-  constructor(private readonly dbHealth: PrismaHealthService) {}
+  constructor(private readonly dbHealth: PrismaHealthService) { }
 
   @Get()
   health() {

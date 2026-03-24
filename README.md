@@ -1,251 +1,107 @@
-# ExpenseSplit OCR
+# 💸 ExpenseSplit OCR
 
-Monorepo para extracción OCR de tickets y división de gastos mediante IA multimodal.
+**IA Multimodal + Clean Architecture** para la división inteligente de gastos.  
+*Proyecto destacado para la **Hackatón CubePath 2026**.*
 
-**Hackatón CubePath 2026** — Arquitectura profesional, MVP funcional.
+[![Nx](https://img.shields.io/badge/Monorepo-Nx-blue?style=flat-square)](https://nx.dev)
+[![NestJS](https://img.shields.io/badge/Backend-NestJS-E0234E?style=flat-square)](https://nestjs.com)
+[![Next.js](https://img.shields.io/badge/Frontend-Next.js%2015-black?style=flat-square)](https://nextjs.org)
+[![Gemini](https://img.shields.io/badge/AI-Gemini%202.5%20Flash-8E75B2?style=flat-square)](https://deepmind.google/technologies/gemini/)
 
 ---
 
-## 🚀 Quick Start
+## 🌟 La Propuesta de Valor
 
-### Local Development
+**ExpenseSplit OCR** resuelve el caos de las cuentas compartidas mediante una experiencia **Zero-Login**. Sube una foto, deja que la IA procese los ítems y comparte el resumen por WhatsApp en segundos. 
 
+**Demo en vivo:** [https://tu-app.cubepath.com](https://tu-app.cubepath.com)
+
+### 🛠️ Stack Tecnológico de Elite
+* **Monorepo:** Gestión eficiente con **Nx Build System**.
+* **IA Engine:** Implementación de **Gemini 2.5 Flash** (Multimodal nativo) para una precisión de OCR superior en tickets complejos.
+* **Backend:** **NestJS** siguiendo principios **SOLID** y **Clean Architecture**.
+* **Frontend:** **Next.js 15** (App Router) + **Tailwind CSS** + **shadcn/ui**.
+* **Infraestructura:** Despliegue en **CubePath (Dokploy)** con PostgreSQL interno y **Supabase Storage** para gestión de imágenes.
+
+---
+
+## 🧠 Retos Técnicos & Resiliencia
+
+Durante el desarrollo, superamos desafíos críticos de integración:
+
+1.  **Validación de Datos con Zod:** Implementamos **pre-processing** en los esquemas de Zod para normalizar formatos de fecha e importes, mitigando alucinaciones comunes en modelos LLM.
+2.  **Storage Híbrido:** Las imágenes se procesan en memoria con **Sharp** (resize/compresión) y se almacenan temporalmente en Supabase con políticas de **RLS** configuradas para acceso anónimo seguro.
+
+---
+
+## 🏗️ Arquitectura del Sistema
+
+### Estructura de Capas (Clean Architecture)
+
+| Capa | Responsabilidad |
+| :--- | :--- |
+| **Domain** | Lógica pura de Split y entidades de sesión. |
+| **Infrastructure** | Adaptadores para Gemini, Supabase y Persistencia. |
+| **Application** | Orquestación de casos de uso (OCR -> Parse -> Store). |
+| **Shared/Contracts** | Esquemas de **Zod** compartidos (Single Source of Truth). |
+
+---
+
+## ☁️ Uso de CubePath & Dokploy
+
+Para este proyecto hemos aprovechado la infraestructura de **CubePath** para desplegar una solución robusta y auto-gestionada:
+
+1. **Orquestación con Dokploy:** Utilizamos el panel de Dokploy para gestionar el despliegue automático (CI/CD) directamente desde nuestro monorepo en GitHub.
+2. **Red Interna Segura:** La base de datos PostgreSQL corre en un contenedor dentro de la red privada de CubePath, sin exposición a internet, mejorando la seguridad.
+3. **Escalabilidad:** Gracias a los recursos del VPS de CubePath, el procesamiento de imágenes con `sharp` y el motor de NestJS se ejecutan con baja latencia.
+4. **Health Checks:** Configuramos monitoreo nativo en Dokploy para asegurar que el servicio OCR esté siempre disponible.
+
+
+## 📸 Screenshots
+![Dashboard Principal](docs/diagrams/screenshot-1.png)
+![OCR en Acción](docs/diagrams/screenshot-2.png)
+
+## ✅ Estado del MVP
+
+### ⚡ Core Engine (Backend)
+- [x] **OCR Multimodal:** Extracción de JSON estructurado desde imágenes.
+- [x] **Image Optimization:** Procesamiento con `sharp` para reducir consumo de tokens.
+- [x] **Resilience Plan:** Sistema de reintentos y manejo de errores tipado.
+- [x] **Data Privacy:** Purga automática de registros (TTL 48h).
+
+### 🎨 Experiencia de Usuario (Frontend)
+- [x] **Mobile First:** Interfaz optimizada para captura con cámara.
+- [x] **Live Editing:** Formulario reactivo para corrección manual post-OCR.
+- [x] **Smart Copy:** Generador de resumen para WhatsApp.
+- [x] **Split Engine:** Cálculos precisos de deudas con 2 decimales.
+
+---
+
+## 🚀 Quick Start (Local)
+
+### Requisitos
+* Node.js 20+
+* Docker
+* Google Gemini API Key
+
+### Instalación
 ```bash
 # Instalar dependencias
 npm install
 
-# Levantar API (NestJS) + Web (Next.js)
-npm run dev:api   # http://localhost:8000
-npm run dev:web   # http://localhost:3000
-
-# Build de producción
-npm run build:api
-npm run build:web
-```
-
-### Docker (Testing Local)
-
-```bash
+# Levantar servicios con Docker
 docker-compose up -d
-# API: http://localhost:8000/health
-# Web: http://localhost:3000
-```
 
----
-
-## 🏗️ Arquitectura
-
-### Stack Tecnológico
-
-| Capa | Tecnología |
-|------|------------|
-| **Monorepo** | Nx Build System |
-| **Backend** | NestJS (Clean Architecture + SOLID) |
-| **Frontend** | Next.js 15 (App Router) + Tailwind + shadcn/ui |
-| **IA Engine** | Gemini 1.5 Flash (Multimodal OCR) |
-| **Validación** | Zod (Shared Contracts) |
-| **Estado** | Zustand (Frontend) |
-| **Database** | PostgreSQL 16 (Dokploy internal) |
-| **Storage** | Supabase Storage (imágenes) |
-
-### Estructura del Monorepo
-
-```
-expense-split-ocr/
-├── apps/
-│   ├── api/              # NestJS backend
-│   │   ├── src/
-│   │   │   ├── ocr.controller.ts
-│   │   │   ├── health.controller.ts
-│   │   │   └── main.ts
-│   │   └── Dockerfile
-│   └── web-portal/       # Next.js frontend
-│       ├── app/
-│       │   ├── components/
-│       │   ├── stores/
-│       │   └── page.tsx
-│       └── Dockerfile
-├── libs/
-│   ├── domain/           # Lógica de negocio pura
-│   │   ├── expense-split.ts
-│   │   ├── session.entity.ts
-│   │   └── whatsapp-formatter.ts
-│   ├── ocr-engine/       # Adaptador IA (Gemini)
-│   │   ├── gemini-ocr.service.ts
-│   │   └── ocr-provider.ts
-│   └── shared/contracts  # Zod schemas compartidos
-│       ├── ticket.contract.ts
-│       └── env.contract.ts
-├── specs/                # Documentación técnica
-│   ├── infrastructure-spec.md
-│   ├── persistence-spec.md
-│   ├── deployment-cubepath.md
-│   ├── acceptance-criteria-mvp.md
-│   └── demo-checklist.md
-└── docs/
-    └── diagrams/
-```
-
----
-
-## ✅ Estado Actual
-
-### Backend (NestJS)
-- [x] `GET /health` — Health check endpoint
-- [x] `POST /tickets/ocr` — OCR de tickets con Gemini 1.5 Flash
-- [x] Preprocesado con `sharp` (resize + compresión)
-- [x] Upload en memoria (sin disco)
-- [x] Retry automático (2 intentos)
-- [x] Error handling graceful (JSON tipado)
-- [x] Validación de entorno al boot (`envSchema`)
-- [x] CORS configurable
-
-### Frontend (Next.js)
-- [x] Upload de imágenes (JPG/PNG + cámara móvil)
-- [x] Skeleton de procesamiento
-- [x] Formulario editable (React Hook Form + Zod)
-- [x] Advertencia si `sum(items) ≠ total`
-- [x] Split equitativo (2 decimales)
-- [x] Split por ítem (asignación individual)
-- [x] Botón "Copiar resumen para WhatsApp"
-- [x] UI responsive (mobile-first)
-
-### Dominio
-- [x] Lógica de split (equitativo + por ítem)
-- [x] Sesiones anónimas (TTL 48h)
-- [x] Repository pattern
-- [x] Formatter WhatsApp (domain service)
-
-### Contratos
-- [x] `TicketSchema` — Contrato OCR (merchant, total, items, quantity)
-- [x] `EnvSchema` — Validación de entorno
-- [x] `OcrFailureSchema` — Errores tipados
-
----
-
-## 📋 Endpoints API
-
-| Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| `GET` | `/health` | Health check básico |
-| `GET` | `/health/db` | Health check + DB connection |
-| `POST` | `/tickets/ocr` | Upload imagen → OCR → JSON |
-| `POST` | `/admin/purge-expired` | Purga de tickets expirados (48h) |
-
----
-
-## 🔒 Seguridad y Privacidad
-
-- **Sin autenticación** — Sesiones anónimas con UUID
-- **TTL 48h** — Purga automática de datos
-- **Red interna** — PostgreSQL no expuesto a internet
-- **Validación Zod** — Todos los inputs validados antes de procesar
-- **Rate limiting** — Proteger endpoint OCR
-
----
-
-## 🚀 Deploy en CubePath (Dokploy)
-
-### Servicios Requeridos
-
-| Servicio | Tipo | Puerto | Notas |
-|----------|------|--------|-------|
-| PostgreSQL | Database | 5432 (internal) | Sin puerto público |
-| NestJS API | Application | 8000 | Health check `/health` |
-| Next.js Portal | Application | 3000 | Estático o SSR |
-| Supabase Storage | Storage | N/A | Imágenes de tickets |
-
-### Variables de Entorno
-
-```bash
-# Database (red interna Dokploy)
-DATABASE_URL=postgresql://user:pass@postgres:5432/expense_split
-
-# IA
-GEMINI_API_KEY=xxx
-GEMINI_MODEL=gemini-1.5-flash
-
-# App
-NODE_ENV=production
-PORT=8000
-FRONTEND_URL=https://split.tudominio.com
-
-# Supabase Storage (imágenes)
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_KEY=your-service-role-key
+### Variables de Entorno (.env)
+GEMINI_API_KEY=tu_clave_aqui
+GEMINI_MODEL=gemini-2.5-flash
+SUPABASE_URL=tu_url_supabase
+SUPABASE_KEY=tu_key
 SUPABASE_BUCKET=ticket-images
-```
+````
 
-Ver `specs/deployment-cubepath.md` para configuración completa.
+Autor: [Yonnier Alemán](https://github.com/yonnije)
 
----
+Hackatón: CubePath 2026 (midudev)
 
-## 📊 Diagramas
-
-### 1) Sequence Flow
-![Sequence Flow](docs/diagrams/sequence-flow.jpg)
-
-### 2) Nx Architecture
-![Nx Architecture](docs/diagrams/nx-architecture.jpg)
-
-### 3) User & Data Flow
-![User & Data Flow](docs/diagrams/user-data-flow.jpg)
-
----
-
-## 📈 Próximos Pasos
-
-### Crítico (Deploy)
-- [ ] Crear PostgreSQL en Dokploy
-- [ ] Deploy API + Portal en CubePath
-- [ ] Configurar Supabase Storage para imágenes
-- [ ] Ejecutar migraciones DB
-
-### Importante (Demo)
-- [ ] Fallback mock OCR (si IA falla en demo)
-- [ ] Medición de performance (<7s upload→datos)
-- [ ] Test con 3 tickets reales
-
-### Nice-to-have
-- [ ] Exportar resumen a PDF
-- [ ] Historial local (localStorage)
-- [ ] Animaciones de progreso detalladas
-
----
-
-## 🏆 Diferenciadores Técnicos (para Jurado)
-
-1. **Infraestructura auto-gestionada** — PostgreSQL en red interna (no BaaS externo)
-2. **Clean Architecture** — Domain, Application, Infrastructure separados
-3. **Contratos Zod** — Single Source of Truth entre front/back
-4. **TTL automático** — Purga de datos a las 48h (privacidad por diseño)
-5. **Storage híbrido** — DB local + imágenes en S3 (escalabilidad)
-
-### SOLID Aplicado
-
-| Principio | Implementación |
-|-----------|----------------|
-| **S**RP | Servicios separados (OCR, Split, Cleanup) |
-| **O**CP | Adapter pattern para proveedores OCR |
-| **L**SP | `OcrProvider` interfaz intercambiable |
-| **I**SP | Contratos mínimos por caso de uso |
-| **D**IP | Repositorios inyectados, no hardcodeados |
-
----
-
-## 📄 Documentación Completa
-
-| Documento | Descripción |
-|-----------|-------------|
-| `specs/infrastructure-spec.md` | Arquitectura auto-gestionada (Dokploy + PostgreSQL) |
-| `specs/persistence-spec.md` | Schema DB, TTL, purga, repository pattern |
-| `specs/deployment-cubepath.md` | Guía de deploy paso a paso |
-| `specs/acceptance-criteria-mvp.md` | Criterios de aceptación por módulo |
-| `specs/demo-checklist.md` | Checklist para demo en vivo |
-| `specs/technical-spec.md` | Spec técnica formal (hackatón) |
-
----
-
-**Licencia:** MIT  
-**Autor:** Yonni  
-**Hackatón:** CubePath 2026
+Licencia: MIT

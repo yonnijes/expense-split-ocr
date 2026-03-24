@@ -6,19 +6,19 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/web-portal && npx next dev"
+        "command": "cd apps/web-portal && NODE_ENV=development node ../../node_modules/next/dist/bin/next dev"
       }
     },
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/web-portal && npx next build"
+        "command": "cd apps/web-portal && NODE_ENV=production node ../../node_modules/next/dist/bin/next build"
       }
     },
     "start": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "cd apps/web-portal && npx next start"
+        "command": "cd apps/web-portal && NODE_ENV=production node ../../node_modules/next/dist/bin/next start"
       }
     }
   }

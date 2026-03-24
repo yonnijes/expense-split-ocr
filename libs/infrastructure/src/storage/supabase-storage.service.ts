@@ -1,13 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 @Injectable()
 export class SupabaseStorageService {
+  private readonly logger = new Logger(SupabaseStorageService.name);
   private readonly client: SupabaseClient;
   private readonly bucket: string;
 
-  constructor(private readonly config: ConfigService) {
+  constructor(@Inject(ConfigService) private readonly config: ConfigService) {
     const url = this.config.get<string>('SUPABASE_URL');
     const key = this.config.get<string>('SUPABASE_KEY');
     this.bucket = this.config.get<string>('SUPABASE_BUCKET') ?? 'ticket-images';
@@ -33,6 +34,7 @@ export class SupabaseStorageService {
     }
 
     const { data } = this.client.storage.from(this.bucket).getPublicUrl(objectKey);
+    this.logger.log(`Public URL generated for ${objectKey}: ${data.publicUrl}`);
 
     return { publicUrl: data.publicUrl, objectKey };
   }

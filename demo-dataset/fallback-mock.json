@@ -1,0 +1,33 @@
+{
+  "merchant": "Restaurante Demo (Fallback)",
+  "date": "2026-03-22T19:00:00Z",
+  "total": 45.5,
+  "currency": "EUR",
+  "items": [
+    {
+      "description": "Café con leche",
+      "quantity": 3,
+      "price": 2.5
+    },
+    {
+      "description": "Tostada de jamón",
+      "quantity": 2,
+      "price": 5.0
+    },
+    {
+      "description": "Zumo de naranja",
+      "quantity": 3,
+      "price": 3.5
+    },
+    {
+      "description": "Té verde",
+      "quantity": 1,
+      "price": 2.5
+    },
+    {
+      "description": "Croissant",
+      "quantity": 6,
+      "price": 2.5
+    }
+  ]
+}

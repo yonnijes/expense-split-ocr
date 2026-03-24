@@ -51,7 +51,11 @@ const initialState: TicketState = {
   progressMessage: 'Preparando OCR...',
   ticket: null,
   splitMode: 'equal',
-  participants: [],
+  participants: [
+    { id: 'usr-demo-juan', name: 'Juan' },
+    { id: 'usr-demo-ana', name: 'Ana' },
+    { id: 'usr-demo-luis', name: 'Luis' },
+  ],
   allocations: {},
   error: null,
 };

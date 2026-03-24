@@ -109,9 +109,11 @@ export class PrismaSessionRepository implements SessionRepository, OnModuleInit 
 
   async create(): Promise<SessionEntity> {
     const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000);
+    this.logger.log(`Creating new session with expiration: ${expiresAt.toISOString()}`);
     const session = await this.prisma.session.create({
       data: { expiresAt },
     });
+    this.logger.log(`Session created with ID: ${session.id}`);
     return {
       id: session.id,
       expiresAt: session.expiresAt,

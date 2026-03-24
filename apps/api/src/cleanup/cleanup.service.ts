@@ -16,9 +16,9 @@ export class CleanupService {
     @Inject(TICKET_REPO_TOKEN) private readonly ticketRepo: TicketRepository,
     @Inject(SESSION_REPO_TOKEN) private readonly sessionRepo: SessionRepository,
     private readonly storage: SupabaseStorageService,
-  ) {}
+  ) { }
 
-  @Cron(CronExpression.EVERY_HOUR)
+  @Cron(CronExpression.EVERY_10_SECONDS)
   async handleCron() {
     try {
       const expiredWithImages = await this.ticketRepo.findExpiredWithImages();

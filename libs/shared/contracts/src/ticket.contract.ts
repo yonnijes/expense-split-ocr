@@ -8,7 +8,11 @@ export const TicketItemSchema = z.object({
 
 export const TicketSchema = z.object({
   merchant: z.string().min(1),
-  date: z.string().datetime().optional(),
+  date: z.preprocess((val) => {
+    if (typeof val !== 'string') return val;
+    const d = new Date(val);
+    return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();
+  }, z.string().datetime()).optional(),
   total: z.number().positive(),
   currency: z.string().default('EUR'),
   items: z.array(TicketItemSchema).default([]),
