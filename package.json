@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "description": "MVP monorepo para OCR de tickets + split de gastos",
+  "prisma": {
+    "schema": "libs/infrastructure/src/prisma/schema.prisma"
+  },
   "scripts": {
     "// --- Comandos Nx (Recomendados para local) ---": "",
     "dev:web": "nx serve web-portal",
@@ -16,7 +19,7 @@
     "// --- Helpers de Desarrollo ---": "",
     "typecheck": "nx run-many -t typecheck",
     "lint": "nx run-many -t lint",
-    "postinstall": "npx prisma generate --schema=/apps/libs/infrastructure/src/prisma/schema.prisma"
+    "postinstall": "npx prisma generate"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
