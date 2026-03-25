@@ -15,7 +15,8 @@
     "start:api": "node dist/apps/api/main.js",
     "// --- Helpers de Desarrollo ---": "",
     "typecheck": "nx run-many -t typecheck",
-    "lint": "nx run-many -t lint"
+    "lint": "nx run-many -t lint",
+    "postinstall": "npx prisma generate --schema=/apps/libs/infrastructure/src/prisma/schema.prisma"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
