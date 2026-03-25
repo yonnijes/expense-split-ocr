@@ -11,8 +11,8 @@ async function bootstrap() {
   });
   const config = app.get(ConfigService);
 
-  const allowedOrigin = config.get<string>('FRONTEND_URL', 'http://localhost:3000');
-  app.enableCors({ origin: [allowedOrigin], credentials: true });
+  //const allowedOrigin = config.get<string>('FRONTEND_URL', 'http://localhost:3000');
+  app.enableCors({ origin: true, credentials: true });
 
   const port = config.get<number>('PORT', 8000);
   await app.listen(port, '0.0.0.0');
